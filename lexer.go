@@ -70,7 +70,7 @@ func (l *Lexer) DetermineToken() {
 		return
 	}
 
-	if TOTAL_COMMAND_COUNT != 7 {
+	if TOTAL_COMMAND_COUNT != 12 {
 		panic("Mismatched number of commands")
 	}
 
@@ -132,6 +132,36 @@ func (l *Lexer) DetermineToken() {
 	case "dup":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_DUP,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "rem":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_REM,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "mul":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_MUL,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "div":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_DIV,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "rounded":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_ROUNDED,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "dumpc":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_DUMPC,
 			Line:  l.CurrentLine,
 			Value: "",
 		})

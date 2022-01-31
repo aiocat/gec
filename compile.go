@@ -30,7 +30,7 @@ func (c *Compiler) ShouldIgnore(index int) bool {
 }
 
 func (c *Compiler) Run() {
-	c.Source = "std::stack<int> stack;\n"
+	c.Source = "std::stack<int> stack;\nint _rounded, _gec_one, _gec_two = 0;\n"
 
 	for index, token := range c.Tokens {
 		if c.ShouldIgnore(index) {
@@ -64,8 +64,6 @@ func (c *Compiler) Run() {
 			} else {
 				panic("Push command only accepts integer or variable")
 			}
-		} else if token.Key == COMMAND_ADD {
-			c.Source += "int _gec_one = stack.top();\nstack.pop();\nint _gec_two = stack.top();\nstack.pop();\nstack.push(_gec_one+_gec_two);\n"
 		} else if token.Key == COMMAND_END {
 			c.Source += "}\n"
 		} else if token.Key == COMMAND_HALT {
@@ -75,7 +73,11 @@ func (c *Compiler) Run() {
 				panic("Halt command only accepts integer or variable")
 			}
 		} else if token.Key == COMMAND_DUMP {
-			c.Source += "int _gec_dump = stack.top();\nstack.pop();\nstd::cout << _gec_dump;\n"
+			if c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_STRING {
+				c.Source += "std::cout << " + c.Tokens[index+1].Value + ";\n"
+			} else {
+				c.Source += "_gec_one = stack.top();\nstack.pop();\nstd::cout << _gec_one;\n"
+			}
 		} else if token.Key == COMMAND_CALL {
 			if c.Tokens[index+1].Key == TYPE_FUNCTION {
 				c.Ignore = append(c.Ignore, index+1)
@@ -92,7 +94,7 @@ func (c *Compiler) Run() {
 					}
 				}
 
-				c.Source += fmt.Sprintf("%s(%s);\n", c.Tokens[index+1].Value, strings.Join(funcVariables, ","))
+				c.Source += fmt.Sprintf("_gec_one=%s(%s);\nif(_gec_one!=0){return _gec_one;}\n", c.Tokens[index+1].Value, strings.Join(funcVariables, ","))
 			} else {
 				panic("You only can call functions")
 			}
@@ -102,6 +104,22 @@ func (c *Compiler) Run() {
 				c.Source += "int " + c.Tokens[index+1].Value + " = stack.top();\nstack.pop();\n"
 			} else {
 				c.Source += "stack.push(stack.top());\n"
+			}
+		} else if token.Key == COMMAND_ADD {
+			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_one+_gec_two);\n"
+		} else if token.Key == COMMAND_REM {
+			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_two-_gec_one);\n"
+		} else if token.Key == COMMAND_MUL {
+			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_one*_gec_two);\n"
+		} else if token.Key == COMMAND_DIV {
+			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nif(_gec_two%_gec_one==0){\nstack.push(_gec_two/_gec_one);\n_rounded = 0;}else{\nstack.push((int)(_gec_two/_gec_one));\n_rounded = 1;}\n"
+		} else if token.Key == COMMAND_ROUNDED {
+			c.Source += "stack.push(_rounded);\n"
+		} else if token.Key == COMMAND_DUMPC {
+			if c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_STRING {
+				c.Source += "std::cout << (char)" + c.Tokens[index+1].Value + ";\n"
+			} else {
+				c.Source += "_gec_one = stack.top();\nstack.pop();\nstd::cout << (char)_gec_one;\n"
 			}
 		}
 	}

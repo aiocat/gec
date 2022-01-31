@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/sha1"
 	"fmt"
 	"os"
 	"os/exec"
@@ -30,7 +29,8 @@ func main() {
 	compiler := NewCompiler(lexer.Tokens)
 	compiler.Run()
 
-	cPlusPlusFile := fmt.Sprintf("%x.cpp", sha1.Sum(fileBody))
+	noExtFileName := fileName[:len(fileName)-len(path.Ext(fileName))]
+	cPlusPlusFile := noExtFileName + ".cpp"
 
 	fmt.Printf("[INFO]: Writing compiled source into %s\n", cPlusPlusFile)
 	err = os.WriteFile(cPlusPlusFile, []byte(compiler.Source), 0666)
@@ -38,8 +38,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	noExtFileName := fileName[:len(fileName)-len(path.Ext(fileName))]
 
 	fmt.Printf("[INFO]: Compiling the C++ source code with \"g++\" to: \"%s\"\n", noExtFileName)
 	_, err = exec.Command("g++", cPlusPlusFile, "-o", noExtFileName).CombinedOutput()

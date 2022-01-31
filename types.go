@@ -9,13 +9,20 @@ const (
 )
 
 const (
-	COMMAND_PUSH        = iota
-	COMMAND_ADD         = iota
-	COMMAND_HALT        = iota
-	COMMAND_END         = iota
-	COMMAND_DUMP        = iota
-	COMMAND_CALL        = iota
-	COMMAND_DUP         = iota
+	COMMAND_PUSH    = iota
+	COMMAND_HALT    = iota
+	COMMAND_END     = iota
+	COMMAND_DUMP    = iota
+	COMMAND_DUMPC   = iota
+	COMMAND_CALL    = iota
+	COMMAND_DUP     = iota
+	COMMAND_ROUNDED = iota
+
+	COMMAND_ADD = iota
+	COMMAND_REM = iota
+	COMMAND_MUL = iota
+	COMMAND_DIV = iota
+
 	TOTAL_COMMAND_COUNT = iota
 )
 
