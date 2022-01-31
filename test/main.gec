@@ -1,7 +1,14 @@
+#test "a" "b":
+ push "a"
+ push "b"
+ add
+ halt 1
+end
+
 #main:
  push 65
- push 66
- add
+ dup "qweasd"
+ call #test "qweasd" 69:
  dump
  halt 0
 end

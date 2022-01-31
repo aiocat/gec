@@ -35,7 +35,7 @@ func (l *Lexer) Run() {
 				l.Tokens = append(l.Tokens, &Token{
 					Key:   TYPE_DOUBLEDOT,
 					Line:  l.CurrentLine,
-					Value: nil,
+					Value: "",
 				})
 			case '"':
 				l.CollectingString = true
@@ -70,7 +70,7 @@ func (l *Lexer) DetermineToken() {
 		return
 	}
 
-	if TOTAL_COMMAND_COUNT != 5 {
+	if TOTAL_COMMAND_COUNT != 7 {
 		panic("Mismatched number of commands")
 	}
 
@@ -79,49 +79,61 @@ func (l *Lexer) DetermineToken() {
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_PUSH,
 			Line:  l.CurrentLine,
-			Value: nil,
+			Value: "",
 		})
 	case "add":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_ADD,
 			Line:  l.CurrentLine,
-			Value: nil,
+			Value: "",
 		})
 	case "halt":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_HALT,
 			Line:  l.CurrentLine,
-			Value: nil,
+			Value: "",
 		})
 	case "void":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   TYPE_VOID,
 			Line:  l.CurrentLine,
-			Value: nil,
+			Value: "",
 		})
 	case "int":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   TYPE_INT,
 			Line:  l.CurrentLine,
-			Value: nil,
+			Value: "",
 		})
 	case "str":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   TYPE_STRING,
 			Line:  l.CurrentLine,
-			Value: nil,
+			Value: "",
 		})
 	case "end":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_END,
 			Line:  l.CurrentLine,
-			Value: nil,
+			Value: "",
 		})
 	case "dump":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_DUMP,
 			Line:  l.CurrentLine,
-			Value: nil,
+			Value: "",
+		})
+	case "call":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_CALL,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "dup":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_DUP,
+			Line:  l.CurrentLine,
+			Value: "",
 		})
 	default:
 		if l.CollectedToken[0] == '#' {
@@ -131,7 +143,7 @@ func (l *Lexer) DetermineToken() {
 				Value: l.CollectedToken[1:],
 			})
 		} else {
-			output, err := strconv.Atoi(l.CollectedToken)
+			_, err := strconv.Atoi(l.CollectedToken)
 
 			if err != nil {
 				panic("Undetermined token error")
@@ -140,7 +152,7 @@ func (l *Lexer) DetermineToken() {
 			l.Tokens = append(l.Tokens, &Token{
 				Key:   TYPE_INT,
 				Line:  l.CurrentLine,
-				Value: output,
+				Value: l.CollectedToken,
 			})
 		}
 	}

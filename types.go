@@ -14,10 +14,12 @@ const (
 	COMMAND_HALT        = iota
 	COMMAND_END         = iota
 	COMMAND_DUMP        = iota
+	COMMAND_CALL        = iota
+	COMMAND_DUP         = iota
 	TOTAL_COMMAND_COUNT = iota
 )
 
 type Token struct {
 	Key, Line int
-	Value     interface{}
+	Value     string
 }
