@@ -1,4 +1,7 @@
-push 65
-push 66
-add
-halt
+#main:
+ push 65
+ push 66
+ add
+ dump
+ halt 0
+end

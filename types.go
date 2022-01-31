@@ -1,14 +1,19 @@
 package main
 
 const (
-	TYPE_INT    = -1
-	TYPE_STRING = -2
+	TYPE_INT       = -1
+	TYPE_STRING    = -2
+	TYPE_VOID      = -3
+	TYPE_FUNCTION  = -4
+	TYPE_DOUBLEDOT = -5
 )
 
 const (
 	COMMAND_PUSH        = iota
 	COMMAND_ADD         = iota
 	COMMAND_HALT        = iota
+	COMMAND_END         = iota
+	COMMAND_DUMP        = iota
 	TOTAL_COMMAND_COUNT = iota
 )
 

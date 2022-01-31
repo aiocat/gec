@@ -12,7 +12,8 @@ type Lexer struct {
 
 func NewLexer(data string) *Lexer {
 	return &Lexer{
-		Raw: data,
+		Raw:         data,
+		CurrentLine: 1,
 	}
 }
 
@@ -23,11 +24,19 @@ func (l *Lexer) Run() {
 			case '\r':
 				continue
 			case '\n':
-				l.CurrentLine++
 				l.DetermineToken()
+				l.CurrentLine++
 				continue
 			case ' ':
 				l.DetermineToken()
+			case ':':
+				l.DetermineToken()
+
+				l.Tokens = append(l.Tokens, &Token{
+					Key:   TYPE_DOUBLEDOT,
+					Line:  l.CurrentLine,
+					Value: nil,
+				})
 			case '"':
 				l.CollectingString = true
 				continue
@@ -41,7 +50,7 @@ func (l *Lexer) Run() {
 		} else {
 			if char == '"' && l.Raw[index-1] != '\\' {
 				l.Tokens = append(l.Tokens, &Token{
-					Key:   TYPE_INT,
+					Key:   TYPE_STRING,
 					Line:  l.CurrentLine,
 					Value: l.CollectedToken,
 				})
@@ -61,7 +70,7 @@ func (l *Lexer) DetermineToken() {
 		return
 	}
 
-	if TOTAL_COMMAND_COUNT != 3 {
+	if TOTAL_COMMAND_COUNT != 5 {
 		panic("Mismatched number of commands")
 	}
 
@@ -84,18 +93,56 @@ func (l *Lexer) DetermineToken() {
 			Line:  l.CurrentLine,
 			Value: nil,
 		})
-	default:
-		output, err := strconv.Atoi(l.CollectedToken)
-
-		if err != nil {
-			panic("Undetermined token error")
-		}
-
+	case "void":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   TYPE_VOID,
+			Line:  l.CurrentLine,
+			Value: nil,
+		})
+	case "int":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   TYPE_INT,
 			Line:  l.CurrentLine,
-			Value: output,
+			Value: nil,
 		})
+	case "str":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   TYPE_STRING,
+			Line:  l.CurrentLine,
+			Value: nil,
+		})
+	case "end":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_END,
+			Line:  l.CurrentLine,
+			Value: nil,
+		})
+	case "dump":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_DUMP,
+			Line:  l.CurrentLine,
+			Value: nil,
+		})
+	default:
+		if l.CollectedToken[0] == '#' {
+			l.Tokens = append(l.Tokens, &Token{
+				Key:   TYPE_FUNCTION,
+				Line:  l.CurrentLine,
+				Value: l.CollectedToken[1:],
+			})
+		} else {
+			output, err := strconv.Atoi(l.CollectedToken)
+
+			if err != nil {
+				panic("Undetermined token error")
+			}
+
+			l.Tokens = append(l.Tokens, &Token{
+				Key:   TYPE_INT,
+				Line:  l.CurrentLine,
+				Value: output,
+			})
+		}
 	}
 
 	l.CollectedToken = ""
