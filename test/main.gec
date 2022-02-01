@@ -1,17 +1,12 @@
-#test "a" "b":
- push "a"
- push "b"
- div
- halt 0
-end
-
 #main:
- push 66
- dup "qweasd"
- call #test "qweasd" 5:
- dump
- dumpc 10
- rounded
- dump
- halt 0
+  push 5
+  push 60
+  div
+  rounded
+
+  if = 0
+    dump
+  else
+    dumpc 65
+  end
 end

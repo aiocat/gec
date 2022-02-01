@@ -29,6 +29,38 @@ func (l *Lexer) Run() {
 				continue
 			case ' ':
 				l.DetermineToken()
+			case '>':
+				l.DetermineToken()
+
+				l.Tokens = append(l.Tokens, &Token{
+					Key:   TYPE_COMPARE,
+					Line:  l.CurrentLine,
+					Value: ">",
+				})
+			case '<':
+				l.DetermineToken()
+
+				l.Tokens = append(l.Tokens, &Token{
+					Key:   TYPE_COMPARE,
+					Line:  l.CurrentLine,
+					Value: "<",
+				})
+			case '=':
+				l.DetermineToken()
+
+				l.Tokens = append(l.Tokens, &Token{
+					Key:   TYPE_COMPARE,
+					Line:  l.CurrentLine,
+					Value: "==",
+				})
+			case '!':
+				l.DetermineToken()
+
+				l.Tokens = append(l.Tokens, &Token{
+					Key:   TYPE_COMPARE,
+					Line:  l.CurrentLine,
+					Value: "!=",
+				})
 			case ':':
 				l.DetermineToken()
 
@@ -70,7 +102,7 @@ func (l *Lexer) DetermineToken() {
 		return
 	}
 
-	if TOTAL_COMMAND_COUNT != 12 {
+	if TOTAL_COMMAND_COUNT != 14 {
 		panic("Mismatched number of commands")
 	}
 
@@ -90,12 +122,6 @@ func (l *Lexer) DetermineToken() {
 	case "halt":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_HALT,
-			Line:  l.CurrentLine,
-			Value: "",
-		})
-	case "void":
-		l.Tokens = append(l.Tokens, &Token{
-			Key:   TYPE_VOID,
 			Line:  l.CurrentLine,
 			Value: "",
 		})
@@ -162,6 +188,30 @@ func (l *Lexer) DetermineToken() {
 	case "dumpc":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_DUMPC,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case ">=":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   TYPE_COMPARE,
+			Line:  l.CurrentLine,
+			Value: ">=",
+		})
+	case "<=":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   TYPE_COMPARE,
+			Line:  l.CurrentLine,
+			Value: "<=",
+		})
+	case "if":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_IF,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "else":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_ELSE,
 			Line:  l.CurrentLine,
 			Value: "",
 		})

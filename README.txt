@@ -7,10 +7,10 @@ into valid C++ source. website at:
   https://aiocat.gitlab.io/gecs
 
 This project is still under-development. Please use at your own risk!
-For documentation, please visit: 
+For documentation, please visit (planned): 
 
   https://gitlab.com/aiocat/gec/doc
 
-Gec VM is distributed under MIT license. for more information:
+Gec is distributed under MIT license. for more information:
 
   https://gitlab.com/aiocat/gec/-/blob/main/LICENSE

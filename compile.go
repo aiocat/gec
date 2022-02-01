@@ -59,7 +59,7 @@ func (c *Compiler) Run() {
 			variableFormat = strings.TrimRight(variableFormat, ",")
 			c.Source += fmt.Sprintf("int %s(%s){\n", token.Value, variableFormat)
 		} else if token.Key == COMMAND_PUSH {
-			if c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_STRING {
+			if index+1 < len(c.Tokens) && (c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_STRING) {
 				c.Source += fmt.Sprintf("stack.push(%v);\n", c.Tokens[index+1].Value)
 			} else {
 				panic("Push command only accepts integer or variable")
@@ -67,19 +67,19 @@ func (c *Compiler) Run() {
 		} else if token.Key == COMMAND_END {
 			c.Source += "}\n"
 		} else if token.Key == COMMAND_HALT {
-			if c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_STRING {
+			if index+1 < len(c.Tokens) && (c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_STRING) {
 				c.Source += fmt.Sprintf("return %v;\n", c.Tokens[index+1].Value)
 			} else {
 				panic("Halt command only accepts integer or variable")
 			}
 		} else if token.Key == COMMAND_DUMP {
-			if c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_STRING {
+			if index+1 < len(c.Tokens) && (c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_STRING) {
 				c.Source += "std::cout << " + c.Tokens[index+1].Value + ";\n"
 			} else {
 				c.Source += "_gec_one = stack.top();\nstack.pop();\nstd::cout << _gec_one;\n"
 			}
 		} else if token.Key == COMMAND_CALL {
-			if c.Tokens[index+1].Key == TYPE_FUNCTION {
+			if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_FUNCTION {
 				c.Ignore = append(c.Ignore, index+1)
 				funcVariables := []string{}
 
@@ -99,7 +99,7 @@ func (c *Compiler) Run() {
 				panic("You only can call functions")
 			}
 		} else if token.Key == COMMAND_DUP {
-			if c.Tokens[index+1].Key == TYPE_STRING {
+			if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_STRING {
 				c.Ignore = append(c.Ignore, index+1)
 				c.Source += "int " + c.Tokens[index+1].Value + " = stack.top();\nstack.pop();\n"
 			} else {
@@ -108,19 +108,31 @@ func (c *Compiler) Run() {
 		} else if token.Key == COMMAND_ADD {
 			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_one+_gec_two);\n"
 		} else if token.Key == COMMAND_REM {
-			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_two-_gec_one);\n"
+			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_one-gec_two);\n"
 		} else if token.Key == COMMAND_MUL {
 			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_one*_gec_two);\n"
 		} else if token.Key == COMMAND_DIV {
-			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nif(_gec_two%_gec_one==0){\nstack.push(_gec_two/_gec_one);\n_rounded = 0;}else{\nstack.push((int)(_gec_two/_gec_one));\n_rounded = 1;}\n"
+			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nif(_gec_one%_gec_two==0){\nstack.push(_gec_one/_gec_two);\n_rounded = 0;}else{\nstack.push((int)(_gec_one/_gec_two));\n_rounded = 1;}\n"
 		} else if token.Key == COMMAND_ROUNDED {
 			c.Source += "stack.push(_rounded);\n"
 		} else if token.Key == COMMAND_DUMPC {
-			if c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_STRING {
+			if index+1 < len(c.Tokens) && (c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_STRING) {
 				c.Source += "std::cout << (char)" + c.Tokens[index+1].Value + ";\n"
 			} else {
 				c.Source += "_gec_one = stack.top();\nstack.pop();\nstd::cout << (char)_gec_one;\n"
 			}
+		} else if token.Key == COMMAND_IF {
+			if index+3 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_COMPARE && (c.Tokens[index+2].Key == TYPE_INT || c.Tokens[index+2].Key == TYPE_STRING) && (c.Tokens[index+3].Key == TYPE_INT || c.Tokens[index+3].Key == TYPE_STRING) {
+				c.Source += "if(" + c.Tokens[index+2].Value + c.Tokens[index+1].Value + c.Tokens[index+3].Value + "){\n"
+			} else if index+2 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_COMPARE && (c.Tokens[index+2].Key == TYPE_INT || c.Tokens[index+2].Key == TYPE_STRING) {
+				c.Source += "_gec_one = stack.top();\nstack.pop();\nif(_gec_one" + c.Tokens[index+1].Value + c.Tokens[index+2].Value + "){\n"
+			} else if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_COMPARE {
+				c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();if(_gec_one" + c.Tokens[index+1].Value + "_gec_two){\n"
+			} else {
+				panic("Wrong usage for if statement. Please check the docs")
+			}
+		} else if token.Key == COMMAND_ELSE {
+			c.Source += "}else{"
 		}
 	}
 
