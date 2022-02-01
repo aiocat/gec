@@ -1,6 +1,9 @@
 package main
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 type Lexer struct {
 	CollectingString bool
@@ -238,7 +241,7 @@ func (l *Lexer) DetermineToken() {
 			_, err := strconv.Atoi(l.CollectedToken)
 
 			if err != nil {
-				panic("Undetermined token error")
+				panic(fmt.Sprintf("[L%d]: Undetermined token error", l.CurrentLine))
 			}
 
 			l.Tokens = append(l.Tokens, &Token{

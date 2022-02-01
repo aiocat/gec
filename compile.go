@@ -48,7 +48,7 @@ func (c *Compiler) Run() {
 				} else if t.Key == TYPE_DOUBLEDOT {
 					break
 				} else {
-					panic("Function argument names must be string")
+					panic(fmt.Sprintf("[L%d]: Function argument names must be variable", token.Line))
 				}
 			}
 
@@ -62,7 +62,7 @@ func (c *Compiler) Run() {
 			if index+1 < len(c.Tokens) && (c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_VAR) {
 				c.Source += fmt.Sprintf("stack.push(%v);\n", c.Tokens[index+1].Value)
 			} else {
-				panic("Push command only accepts integer or variable")
+				panic(fmt.Sprintf("[L%d]: Push command only accepts integer or variable", token.Line))
 			}
 		} else if token.Key == COMMAND_END {
 			c.Source += "}\n"
@@ -70,7 +70,7 @@ func (c *Compiler) Run() {
 			if index+1 < len(c.Tokens) && (c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_VAR) {
 				c.Source += fmt.Sprintf("return %v;\n", c.Tokens[index+1].Value)
 			} else {
-				panic("Halt command only accepts integer or variable")
+				panic(fmt.Sprintf("[L%d]: Halt command only accepts integer or variable", token.Line))
 			}
 		} else if token.Key == COMMAND_DUMP {
 			if index+1 < len(c.Tokens) && (c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_VAR) {
@@ -96,7 +96,7 @@ func (c *Compiler) Run() {
 
 				c.Source += fmt.Sprintf("_gec_one=%s(%s);\nif(_gec_one!=0){return _gec_one;}\n", c.Tokens[index+1].Value, strings.Join(funcVariables, ","))
 			} else {
-				panic("You only can call functions")
+				panic(fmt.Sprintf("[L%d]: You only can call functions", token.Line))
 			}
 		} else if token.Key == COMMAND_DUP {
 			if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_VAR {
@@ -129,7 +129,7 @@ func (c *Compiler) Run() {
 			} else if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_COMPARE {
 				c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();if(_gec_one" + c.Tokens[index+1].Value + "_gec_two){\n"
 			} else {
-				panic("Wrong usage for if statement. Please check the docs")
+				panic(fmt.Sprintf("[L%d]: Wrong usage for if statement. Please check the docs", token.Line))
 			}
 		} else if token.Key == COMMAND_ELSE {
 			c.Source += "}else{"
@@ -138,7 +138,7 @@ func (c *Compiler) Run() {
 				c.Ignore = append(c.Ignore, index+1)
 				c.Source += "int " + c.Tokens[index+1].Value + " = stack.top();\nstack.pop();\n"
 			} else {
-				panic("Move command only accepts variable")
+				panic(fmt.Sprintf("[L%d]: Move command only accepts variable", token.Line))
 			}
 		}
 	}
