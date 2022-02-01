@@ -69,7 +69,7 @@ func (c *Compiler) Run() {
 				panic(fmt.Sprintf("[L%d]: Push command only accepts integer or variable", token.Line))
 			}
 		} else if token.Key == COMMAND_END {
-			c.Source += "}\n"
+			c.Source += "};\n"
 		} else if token.Key == COMMAND_HALT {
 			if index+1 < len(c.Tokens) && (c.Tokens[index+1].Key == TYPE_INT || c.Tokens[index+1].Key == TYPE_VAR) {
 				c.Source += fmt.Sprintf("return %v;\n", c.Tokens[index+1].Value)
@@ -180,12 +180,32 @@ func (c *Compiler) Run() {
 			} else {
 				panic(fmt.Sprintf("[L%d]: Wrong usage for while statement. Please check the docs", token.Line))
 			}
+		} else if token.Key == COMMAND_SKIP {
+			c.Source += "continue;\n"
+		} else if token.Key == COMMAND_BREAK {
+			c.Source += "break;\n"
 		} else if token.Key == COMMAND_GEN {
 			if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_VAR {
 				c.Ignore = append(c.Ignore, index+1)
 				c.Source += "int " + c.Tokens[index+1].Value + ";\n"
 			} else {
-				panic(fmt.Sprintf("[L%d]: Move command only accepts variable", token.Line))
+				panic(fmt.Sprintf("[L%d]: Gen command only accepts variable", token.Line))
+			}
+		} else if token.Key == COMMAND_MODULE {
+			if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_VAR {
+				c.Ignore = append(c.Ignore, index+1)
+				c.Source += "class " + c.Tokens[index+1].Value + "{\n  public:\n"
+			} else {
+				panic(fmt.Sprintf("[L%d]: Module command only accepts variable", token.Line))
+			}
+		} else if token.Key == COMMAND_USEMOD {
+			if index+2 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_VAR && c.Tokens[index+2].Key == TYPE_VAR {
+				c.Ignore = append(c.Ignore, index+1)
+				c.Ignore = append(c.Ignore, index+2)
+
+				c.Source += c.Tokens[index+1].Value + " " + c.Tokens[index+2].Value + ";\n"
+			} else {
+				panic(fmt.Sprintf("[L%d]: Usemod command only accepts variable", token.Line))
 			}
 		}
 	}

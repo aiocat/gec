@@ -73,7 +73,7 @@ func (l *Lexer) DetermineToken() {
 		return
 	}
 
-	if TOTAL_COMMAND_COUNT != 21 {
+	if TOTAL_COMMAND_COUNT != 23 {
 		panic("Mismatched number of commands")
 	}
 
@@ -237,6 +237,18 @@ func (l *Lexer) DetermineToken() {
 	case "gen":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_GEN,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "module":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_MODULE,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "usemod":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_USEMOD,
 			Line:  l.CurrentLine,
 			Value: "",
 		})

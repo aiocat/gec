@@ -27,6 +27,8 @@ const (
 	COMMAND_SKIP    = iota
 	COMMAND_BREAK   = iota
 	COMMAND_GEN     = iota
+	COMMAND_MODULE  = iota
+	COMMAND_USEMOD  = iota
 
 	COMMAND_ADD = iota
 	COMMAND_SUB = iota

@@ -1,6 +1,7 @@
 import "module.gec"
 
 #main:
-  call #factorial 10:
+  usemod $GecMath $gmath
+  call #gmath.factorial 10:
   dump
 end

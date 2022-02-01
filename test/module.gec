@@ -1,4 +1,4 @@
-
+module $GecMath
 #factorial $num:
   gen $temp
 
@@ -16,4 +16,5 @@
   end
 
   halt 0
+end
 end
