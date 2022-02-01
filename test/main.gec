@@ -1,20 +1,13 @@
+import "module.gec"
+
 #main:
-  push 5
-  push 60
-  div
-  rounded
+  call #test 2:
+  dup $thing
+  push 10
 
-  if = 0
-    dump
-  else
-    dumpc 65
+  if >
+    dump $thing
   end
 
-  push 60
-  push 50
-  move $test
-
-  if > $test
-    dumpc 66
-  end
+  halt 0
 end

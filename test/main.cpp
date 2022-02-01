@@ -2,34 +2,32 @@
 #include <iostream>
 std::stack<int> stack;
 int _rounded, _gec_one, _gec_two = 0;
-int main(){
-stack.push(5);
-stack.push(60);
+int test(int a){
+stack.push(a);
+stack.push(a);
+stack.push(1);
 _gec_one = stack.top();
 stack.pop();
 _gec_two = stack.top();
 stack.pop();
-if(_gec_one%_gec_two==0){
-stack.push(_gec_one/_gec_two);
-_rounded = 0;}else{
-stack.push((int)(_gec_one/_gec_two));
-_rounded = 1;}
-stack.push(_rounded);
+stack.push(_gec_one+_gec_two);
 _gec_one = stack.top();
 stack.pop();
-if(_gec_one==0){
-_gec_one = stack.top();
+_gec_two = stack.top();
 stack.pop();
-std::cout << _gec_one;
-}else{std::cout << (char)65;
+stack.push(_gec_one*_gec_two);
+return 0;
 }
-stack.push(60);
-stack.push(50);
-int test = stack.top();
-stack.pop();
+int main(){
+_gec_one=test(2);
+if(_gec_one!=0){return _gec_one;}
+int thing = stack.top();
+stack.push(10);
 _gec_one = stack.top();
 stack.pop();
-if(_gec_one>test){
-std::cout << (char)66;
+_gec_two = stack.top();
+stack.pop();if(_gec_one>_gec_two){
+std::cout << thing;
 }
+return 0;
 }

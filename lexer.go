@@ -105,7 +105,7 @@ func (l *Lexer) DetermineToken() {
 		return
 	}
 
-	if TOTAL_COMMAND_COUNT != 15 {
+	if TOTAL_COMMAND_COUNT != 16 {
 		panic("Mismatched number of commands")
 	}
 
@@ -125,18 +125,6 @@ func (l *Lexer) DetermineToken() {
 	case "halt":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_HALT,
-			Line:  l.CurrentLine,
-			Value: "",
-		})
-	case "int":
-		l.Tokens = append(l.Tokens, &Token{
-			Key:   TYPE_INT,
-			Line:  l.CurrentLine,
-			Value: "",
-		})
-	case "str":
-		l.Tokens = append(l.Tokens, &Token{
-			Key:   TYPE_STRING,
 			Line:  l.CurrentLine,
 			Value: "",
 		})
@@ -221,6 +209,12 @@ func (l *Lexer) DetermineToken() {
 	case "else":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_ELSE,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "import":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_IMPORT,
 			Line:  l.CurrentLine,
 			Value: "",
 		})

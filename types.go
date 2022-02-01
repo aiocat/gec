@@ -21,6 +21,7 @@ const (
 	COMMAND_IF      = iota
 	COMMAND_ELSE    = iota
 	COMMAND_MOVE    = iota
+	COMMAND_IMPORT  = iota
 
 	COMMAND_ADD = iota
 	COMMAND_REM = iota

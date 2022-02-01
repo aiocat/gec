@@ -12,8 +12,13 @@ func main() {
 		panic("File name must be given")
 	}
 
-	fileName := os.Args[1]
+	err := os.Chdir(path.Dir(os.Args[1]))
 
+	if err != nil {
+		panic(err)
+	}
+
+	fileName := path.Base(os.Args[1])
 	fileBody, err := os.ReadFile(fileName)
 
 	if err != nil {

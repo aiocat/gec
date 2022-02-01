@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
 type Compiler struct {
+	Blank    bool
 	Source   string
 	Ignore   []int
 	Tokens   []*Token
@@ -30,7 +32,9 @@ func (c *Compiler) ShouldIgnore(index int) bool {
 }
 
 func (c *Compiler) Run() {
-	c.Source = "std::stack<int> stack;\nint _rounded, _gec_one, _gec_two = 0;\n"
+	if !c.Blank {
+		c.Source = "std::stack<int> stack;\nint _rounded, _gec_one, _gec_two = 0;\n"
+	}
 
 	for index, token := range c.Tokens {
 		if c.ShouldIgnore(index) {
@@ -139,6 +143,24 @@ func (c *Compiler) Run() {
 				c.Source += "int " + c.Tokens[index+1].Value + " = stack.top();\nstack.pop();\n"
 			} else {
 				panic(fmt.Sprintf("[L%d]: Move command only accepts variable", token.Line))
+			}
+		} else if token.Key == COMMAND_IMPORT {
+			if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_STRING {
+				fileBody, err := os.ReadFile(c.Tokens[index+1].Value)
+
+				if err != nil {
+					panic(err)
+				}
+
+				lexer := NewLexer(string(fileBody))
+				lexer.Run()
+
+				compiler := &Compiler{
+					Tokens: lexer.Tokens,
+					Blank:  true,
+				}
+				compiler.Run()
+				c.Source += compiler.Source
 			}
 		}
 	}
