@@ -4,7 +4,7 @@ std::stack<int> stack;
 int _rounded, _gec_one, _gec_two = 0;
 int main(){
 stack.push(5);
-stack.push(61);
+stack.push(60);
 _gec_one = stack.top();
 stack.pop();
 _gec_two = stack.top();
@@ -22,5 +22,14 @@ _gec_one = stack.top();
 stack.pop();
 std::cout << _gec_one;
 }else{std::cout << (char)65;
+}
+stack.push(60);
+stack.push(50);
+int test = stack.top();
+stack.pop();
+_gec_one = stack.top();
+stack.pop();
+if(_gec_one>test){
+std::cout << (char)66;
 }
 }

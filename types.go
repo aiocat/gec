@@ -3,6 +3,7 @@ package main
 const (
 	TYPE_INT       = -1
 	TYPE_STRING    = -2
+	TYPE_VAR       = -2
 	TYPE_COMPARE   = -3
 	TYPE_FUNCTION  = -4
 	TYPE_DOUBLEDOT = -5
@@ -19,6 +20,7 @@ const (
 	COMMAND_ROUNDED = iota
 	COMMAND_IF      = iota
 	COMMAND_ELSE    = iota
+	COMMAND_MOVE    = iota
 
 	COMMAND_ADD = iota
 	COMMAND_REM = iota

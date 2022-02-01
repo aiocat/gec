@@ -9,4 +9,12 @@
   else
     dumpc 65
   end
+
+  push 60
+  push 50
+  move $test
+
+  if > $test
+    dumpc 66
+  end
 end

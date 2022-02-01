@@ -102,7 +102,7 @@ func (l *Lexer) DetermineToken() {
 		return
 	}
 
-	if TOTAL_COMMAND_COUNT != 14 {
+	if TOTAL_COMMAND_COUNT != 15 {
 		panic("Mismatched number of commands")
 	}
 
@@ -158,6 +158,12 @@ func (l *Lexer) DetermineToken() {
 	case "dup":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_DUP,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "move":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_MOVE,
 			Line:  l.CurrentLine,
 			Value: "",
 		})
@@ -219,6 +225,12 @@ func (l *Lexer) DetermineToken() {
 		if l.CollectedToken[0] == '#' {
 			l.Tokens = append(l.Tokens, &Token{
 				Key:   TYPE_FUNCTION,
+				Line:  l.CurrentLine,
+				Value: l.CollectedToken[1:],
+			})
+		} else if l.CollectedToken[0] == '$' {
+			l.Tokens = append(l.Tokens, &Token{
+				Key:   TYPE_VAR,
 				Line:  l.CurrentLine,
 				Value: l.CollectedToken[1:],
 			})
