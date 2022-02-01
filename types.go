@@ -23,9 +23,13 @@ const (
 	COMMAND_MOVE    = iota
 	COMMAND_IMPORT  = iota
 	COMMAND_BUF     = iota
+	COMMAND_WHILE   = iota
+	COMMAND_SKIP    = iota
+	COMMAND_BREAK   = iota
+	COMMAND_GEN     = iota
 
 	COMMAND_ADD = iota
-	COMMAND_REM = iota
+	COMMAND_SUB = iota
 	COMMAND_MUL = iota
 	COMMAND_DIV = iota
 

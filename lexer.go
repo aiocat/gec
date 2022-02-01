@@ -32,38 +32,6 @@ func (l *Lexer) Run() {
 				continue
 			case ' ':
 				l.DetermineToken()
-			case '>':
-				l.DetermineToken()
-
-				l.Tokens = append(l.Tokens, &Token{
-					Key:   TYPE_COMPARE,
-					Line:  l.CurrentLine,
-					Value: ">",
-				})
-			case '<':
-				l.DetermineToken()
-
-				l.Tokens = append(l.Tokens, &Token{
-					Key:   TYPE_COMPARE,
-					Line:  l.CurrentLine,
-					Value: "<",
-				})
-			case '=':
-				l.DetermineToken()
-
-				l.Tokens = append(l.Tokens, &Token{
-					Key:   TYPE_COMPARE,
-					Line:  l.CurrentLine,
-					Value: "==",
-				})
-			case '!':
-				l.DetermineToken()
-
-				l.Tokens = append(l.Tokens, &Token{
-					Key:   TYPE_COMPARE,
-					Line:  l.CurrentLine,
-					Value: "!=",
-				})
 			case ':':
 				l.DetermineToken()
 
@@ -105,7 +73,7 @@ func (l *Lexer) DetermineToken() {
 		return
 	}
 
-	if TOTAL_COMMAND_COUNT != 17 {
+	if TOTAL_COMMAND_COUNT != 21 {
 		panic("Mismatched number of commands")
 	}
 
@@ -158,9 +126,9 @@ func (l *Lexer) DetermineToken() {
 			Line:  l.CurrentLine,
 			Value: "",
 		})
-	case "rem":
+	case "sub":
 		l.Tokens = append(l.Tokens, &Token{
-			Key:   COMMAND_REM,
+			Key:   COMMAND_SUB,
 			Line:  l.CurrentLine,
 			Value: "",
 		})
@@ -187,6 +155,30 @@ func (l *Lexer) DetermineToken() {
 			Key:   COMMAND_DUMPC,
 			Line:  l.CurrentLine,
 			Value: "",
+		})
+	case ">":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   TYPE_COMPARE,
+			Line:  l.CurrentLine,
+			Value: ">",
+		})
+	case "<":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   TYPE_COMPARE,
+			Line:  l.CurrentLine,
+			Value: "<",
+		})
+	case "=":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   TYPE_COMPARE,
+			Line:  l.CurrentLine,
+			Value: "=",
+		})
+	case "!":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   TYPE_COMPARE,
+			Line:  l.CurrentLine,
+			Value: "!",
 		})
 	case ">=":
 		l.Tokens = append(l.Tokens, &Token{
@@ -221,6 +213,30 @@ func (l *Lexer) DetermineToken() {
 	case "buf":
 		l.Tokens = append(l.Tokens, &Token{
 			Key:   COMMAND_BUF,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "while":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_WHILE,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "skip":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_SKIP,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "break":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_BREAK,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "gen":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_GEN,
 			Line:  l.CurrentLine,
 			Value: "",
 		})

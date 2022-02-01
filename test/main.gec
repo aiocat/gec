@@ -1,21 +1,6 @@
 import "module.gec"
 
 #main:
-  call #test 2:
-  dup $thing
-  push 10
-
-  if >
-    dump $thing
-  end
-
-  buf "hello"
-  
-  dumpc
-  dumpc
-  dumpc
-  dumpc
-  dumpc
-
-  halt 0
+  call #factorial 10:
+  dump
 end

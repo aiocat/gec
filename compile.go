@@ -105,18 +105,18 @@ func (c *Compiler) Run() {
 		} else if token.Key == COMMAND_DUP {
 			if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_VAR {
 				c.Ignore = append(c.Ignore, index+1)
-				c.Source += "int " + c.Tokens[index+1].Value + " = stack.top();\n"
+				c.Source += c.Tokens[index+1].Value + " = stack.top();\n"
 			} else {
 				c.Source += "stack.push(stack.top());\n"
 			}
 		} else if token.Key == COMMAND_ADD {
 			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_one+_gec_two);\n"
-		} else if token.Key == COMMAND_REM {
-			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_one-gec_two);\n"
+		} else if token.Key == COMMAND_SUB {
+			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_two-_gec_one);\n"
 		} else if token.Key == COMMAND_MUL {
 			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nstack.push(_gec_one*_gec_two);\n"
 		} else if token.Key == COMMAND_DIV {
-			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nif(_gec_one%_gec_two==0){\nstack.push(_gec_one/_gec_two);\n_rounded = 0;}else{\nstack.push((int)(_gec_one/_gec_two));\n_rounded = 1;}\n"
+			c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nif(_gec_two%_gec_one==0){\nstack.push(_gec_two/_gec_one);\n_rounded = 0;}else{\nstack.push((int)(_gec_two/_gec_one));\n_rounded = 1;}\n"
 		} else if token.Key == COMMAND_ROUNDED {
 			c.Source += "stack.push(_rounded);\n"
 		} else if token.Key == COMMAND_DUMPC {
@@ -131,7 +131,7 @@ func (c *Compiler) Run() {
 			} else if index+2 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_COMPARE && (c.Tokens[index+2].Key == TYPE_INT || c.Tokens[index+2].Key == TYPE_VAR) {
 				c.Source += "_gec_one = stack.top();\nstack.pop();\nif(_gec_one" + c.Tokens[index+1].Value + c.Tokens[index+2].Value + "){\n"
 			} else if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_COMPARE {
-				c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();if(_gec_one" + c.Tokens[index+1].Value + "_gec_two){\n"
+				c.Source += "_gec_one = stack.top();\nstack.pop();\n_gec_two = stack.top();\nstack.pop();\nif(_gec_one" + c.Tokens[index+1].Value + "_gec_two){\n"
 			} else {
 				panic(fmt.Sprintf("[L%d]: Wrong usage for if statement. Please check the docs", token.Line))
 			}
@@ -140,7 +140,7 @@ func (c *Compiler) Run() {
 		} else if token.Key == COMMAND_MOVE {
 			if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_VAR {
 				c.Ignore = append(c.Ignore, index+1)
-				c.Source += "int " + c.Tokens[index+1].Value + " = stack.top();\nstack.pop();\n"
+				c.Source += c.Tokens[index+1].Value + " = stack.top();\nstack.pop();\n"
 			} else {
 				panic(fmt.Sprintf("[L%d]: Move command only accepts variable", token.Line))
 			}
@@ -171,6 +171,21 @@ func (c *Compiler) Run() {
 				for _, char := range c.Tokens[index+1].Value {
 					c.Source += fmt.Sprintf("stack.push(%d);\n", int(char))
 				}
+			}
+		} else if token.Key == COMMAND_WHILE {
+			if index+3 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_COMPARE && (c.Tokens[index+2].Key == TYPE_INT || c.Tokens[index+2].Key == TYPE_VAR) && (c.Tokens[index+3].Key == TYPE_INT || c.Tokens[index+3].Key == TYPE_VAR) {
+				c.Source += "while(" + c.Tokens[index+2].Value + c.Tokens[index+1].Value + c.Tokens[index+3].Value + "){\n"
+			} else if index+2 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_COMPARE && (c.Tokens[index+2].Key == TYPE_INT || c.Tokens[index+2].Key == TYPE_VAR) {
+				c.Source += "while(stack.top()" + c.Tokens[index+1].Value + c.Tokens[index+2].Value + "){\n"
+			} else {
+				panic(fmt.Sprintf("[L%d]: Wrong usage for while statement. Please check the docs", token.Line))
+			}
+		} else if token.Key == COMMAND_GEN {
+			if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_VAR {
+				c.Ignore = append(c.Ignore, index+1)
+				c.Source += "int " + c.Tokens[index+1].Value + ";\n"
+			} else {
+				panic(fmt.Sprintf("[L%d]: Move command only accepts variable", token.Line))
 			}
 		}
 	}

@@ -1,7 +1,19 @@
-#test $a:
-  push $a
-  push $a
-  push 1
-  add mul
+
+#factorial $num:
+  gen $temp
+
+  push $num
+
+  push $num
+  move $temp
+
+  while > $temp 1
+    push $temp
+    push 1
+    sub
+    dup $temp
+    mul
+  end
+
   halt 0
 end
