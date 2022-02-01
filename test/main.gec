@@ -9,5 +9,13 @@ import "module.gec"
     dump $thing
   end
 
+  buf "hello"
+  
+  dumpc
+  dumpc
+  dumpc
+  dumpc
+  dumpc
+
   halt 0
 end

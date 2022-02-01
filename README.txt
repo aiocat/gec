@@ -2,7 +2,7 @@ Gec Language
 ============
 
 Gec is a minimal stack-based programming language. Can be compiled
-into valid C++ source. website at: 
+into valid C++ source. website at (planned): 
 
   https://aiocat.gitlab.io/gecs
 

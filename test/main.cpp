@@ -29,5 +29,25 @@ _gec_two = stack.top();
 stack.pop();if(_gec_one>_gec_two){
 std::cout << thing;
 }
+stack.push(104);
+stack.push(101);
+stack.push(108);
+stack.push(108);
+stack.push(111);
+_gec_one = stack.top();
+stack.pop();
+std::cout << (char)_gec_one;
+_gec_one = stack.top();
+stack.pop();
+std::cout << (char)_gec_one;
+_gec_one = stack.top();
+stack.pop();
+std::cout << (char)_gec_one;
+_gec_one = stack.top();
+stack.pop();
+std::cout << (char)_gec_one;
+_gec_one = stack.top();
+stack.pop();
+std::cout << (char)_gec_one;
 return 0;
 }

@@ -162,6 +162,16 @@ func (c *Compiler) Run() {
 				compiler.Run()
 				c.Source += compiler.Source
 			}
+		} else if token.Key == COMMAND_BUF {
+			if index+1 < len(c.Tokens) && c.Tokens[index+1].Key == TYPE_STRING {
+				if len(c.Tokens[index+1].Value) == 0 {
+					panic("String can't be blank")
+				}
+
+				for _, char := range c.Tokens[index+1].Value {
+					c.Source += fmt.Sprintf("stack.push(%d);\n", int(char))
+				}
+			}
 		}
 	}
 
