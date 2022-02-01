@@ -260,11 +260,19 @@ func (l *Lexer) DetermineToken() {
 				Value: l.CollectedToken[1:],
 			})
 		} else if l.CollectedToken[0] == '$' {
-			l.Tokens = append(l.Tokens, &Token{
-				Key:   TYPE_VAR,
-				Line:  l.CurrentLine,
-				Value: l.CollectedToken[1:],
-			})
+			if len(l.CollectedToken) == 1 {
+				l.Tokens = append(l.Tokens, &Token{
+					Key:   TYPE_VAR,
+					Line:  l.CurrentLine,
+					Value: "stack.top()",
+				})
+			} else {
+				l.Tokens = append(l.Tokens, &Token{
+					Key:   TYPE_VAR,
+					Line:  l.CurrentLine,
+					Value: l.CollectedToken[1:],
+				})
+			}
 		} else {
 			_, err := strconv.Atoi(l.CollectedToken)
 

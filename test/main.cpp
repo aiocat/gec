@@ -32,7 +32,5 @@ int main(){
 GecMath gmath;
 _gec_one=gmath.factorial(10);
 if(_gec_one!=0){return _gec_one;}
-_gec_one = stack.top();
-stack.pop();
-std::cout << _gec_one;
+std::cout << stack.top();
 };
