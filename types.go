@@ -31,6 +31,10 @@ const (
 	COMMAND_USEMOD  = iota
 	COMMAND_POP     = iota
 	COMMAND_INPUT   = iota
+	COMMAND_NST     = iota
+	COMMAND_SWITCH  = iota
+	COMMAND_DST     = iota
+	COMMAND_REP     = iota
 
 	COMMAND_ADD = iota
 	COMMAND_SUB = iota

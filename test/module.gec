@@ -21,7 +21,7 @@ end
 
 module $GecString
   #print:
-    while ! $ 0
+    while ! 0
       dumpc
     end
 
@@ -41,7 +41,7 @@ module $GecString
     push 0
     move $temp
 
-    while ! $ 0
+    while ! 0
       push $temp
       push 1
       add

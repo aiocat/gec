@@ -4,12 +4,13 @@ import "module.gec"
   usemod $GecMath $gmath
   usemod $GecString $gstr
 
-  buf "Please enter a number to continue: "
+  buf "abc"
   call #gstr.print:
 
-  input
-  call #gmath.factorial $:
-  dump $
+  call #gstr.new_line:
+
+  call #gmath.factorial 5:
+  dump
 
   halt 0
 end

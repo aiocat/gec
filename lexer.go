@@ -73,7 +73,7 @@ func (l *Lexer) DetermineToken() {
 		return
 	}
 
-	if TOTAL_COMMAND_COUNT != 25 {
+	if TOTAL_COMMAND_COUNT != 29 {
 		panic("Mismatched number of commands")
 	}
 
@@ -264,6 +264,30 @@ func (l *Lexer) DetermineToken() {
 			Line:  l.CurrentLine,
 			Value: "",
 		})
+	case "nst":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_NST,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "dst":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_DST,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "switch":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_SWITCH,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
+	case "rep":
+		l.Tokens = append(l.Tokens, &Token{
+			Key:   COMMAND_REP,
+			Line:  l.CurrentLine,
+			Value: "",
+		})
 	default:
 		if l.CollectedToken[0] == '#' {
 			l.Tokens = append(l.Tokens, &Token{
@@ -272,19 +296,11 @@ func (l *Lexer) DetermineToken() {
 				Value: l.CollectedToken[1:],
 			})
 		} else if l.CollectedToken[0] == '$' {
-			if len(l.CollectedToken) == 1 {
-				l.Tokens = append(l.Tokens, &Token{
-					Key:   TYPE_VAR,
-					Line:  l.CurrentLine,
-					Value: "stack.top()",
-				})
-			} else {
-				l.Tokens = append(l.Tokens, &Token{
-					Key:   TYPE_VAR,
-					Line:  l.CurrentLine,
-					Value: l.CollectedToken[1:],
-				})
-			}
+			l.Tokens = append(l.Tokens, &Token{
+				Key:   TYPE_VAR,
+				Line:  l.CurrentLine,
+				Value: l.CollectedToken[1:],
+			})
 		} else {
 			_, err := strconv.Atoi(l.CollectedToken)
 
