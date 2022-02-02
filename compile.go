@@ -168,7 +168,8 @@ func (c *Compiler) Run() {
 					panic("String can't be blank")
 				}
 
-				for _, char := range c.Tokens[index+1].Value {
+				c.Source += "stack.push(0);\n"
+				for _, char := range reverse(c.Tokens[index+1].Value) {
 					c.Source += fmt.Sprintf("stack.push(%d);\n", int(char))
 				}
 			}
@@ -207,7 +208,12 @@ func (c *Compiler) Run() {
 			} else {
 				panic(fmt.Sprintf("[L%d]: Usemod command only accepts variable", token.Line))
 			}
+		} else if token.Key == COMMAND_POP {
+			c.Source += "stack.pop();\n"
+		} else if token.Key == COMMAND_INPUT {
+			c.Source += "std::cin >> _gec_one;\nstack.push(_gec_one);\n"
 		}
+
 	}
 
 	includeCompile := ""
@@ -217,4 +223,12 @@ func (c *Compiler) Run() {
 	}
 
 	c.Source = includeCompile + c.Source
+}
+
+func reverse(s string) string {
+	r := []rune(s)
+	for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
+		r[i], r[j] = r[j], r[i]
+	}
+	return string(r)
 }

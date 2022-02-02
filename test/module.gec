@@ -1,20 +1,57 @@
 module $GecMath
-#factorial $num:
-  gen $temp
+  #factorial $num:
+    gen $temp
 
-  push $num
+    push $num
 
-  push $num
-  move $temp
+    push $num
+    move $temp
 
-  while > $temp 1
-    push $temp
-    push 1
-    sub
-    dup $temp
-    mul
+    while > $temp 1
+      push $temp
+      push 1
+      sub
+      dup $temp
+      mul
+    end
+
+    halt 0
+  end
+end
+
+module $GecString
+  #print:
+    while ! $ 0
+      dumpc
+    end
+
+    pop
+    halt 0
   end
 
-  halt 0
-end
+  #new_line:
+    dumpc 10
+    dumpc 13
+    halt 0
+  end
+
+  #count:
+    gen $temp
+
+    push 0
+    move $temp
+
+    while ! $ 0
+      push $temp
+      push 1
+      add
+      move $temp
+      pop
+    end
+
+    pop
+    push $temp
+
+    halt 0
+  end
 end

@@ -2,6 +2,14 @@ import "module.gec"
 
 #main:
   usemod $GecMath $gmath
-  call #gmath.factorial 10:
+  usemod $GecString $gstr
+
+  buf "Please enter a number to continue: "
+  call #gstr.print:
+
+  input
+  call #gmath.factorial $:
   dump $
+
+  halt 0
 end

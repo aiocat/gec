@@ -29,6 +29,8 @@ const (
 	COMMAND_GEN     = iota
 	COMMAND_MODULE  = iota
 	COMMAND_USEMOD  = iota
+	COMMAND_POP     = iota
+	COMMAND_INPUT   = iota
 
 	COMMAND_ADD = iota
 	COMMAND_SUB = iota
