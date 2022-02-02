@@ -1,15 +1,16 @@
 Gec Language
 ============
 
-Gec is a minimal stack-based programming language. Can be compiled
-into valid C++ source. website at (planned): 
+!!! READ !!!
+  Gec is finished with 29 total command. It will not be updated.
+  This language was for testing myself. I will make a better version
+  later.
+!!!      !!!
 
-  https://aiocat.gitlab.io/gecs
+Gec is a minimal stack-based programming language. Can be compiled
+into valid C++ source.
 
 This project is still under-development. Please use at your own risk!
-For documentation, please visit (planned): 
-
-  https://gitlab.com/aiocat/gec/doc
 
 Gec is distributed under MIT license. for more information:
 
